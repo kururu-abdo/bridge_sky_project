@@ -1,0 +1,56 @@
+name: flutter_wifi_app_monorepo
+publish_to: none 
+environment: 
+  sdk: ^3.9.0
+workspace:
+  - packages/desktop_app
+  - packages/mobile_app
+
+dev_dependencies: 
+  melos: ^7.1.1
+
+
+command:
+  bootstrap:
+    usePubspecOverrides: true  # Allows local overrides for dependencies if needed
+melos:
+  scripts:
+   # Install dependencies across all packages
+    get:
+      run: melos exec -- flutter pub get
+      description: Run `flutter pub get` in all packages.
+
+  # Analyze code
+    analyze:
+      run: melos exec -- flutter analyze
+      description: Analyze all packages.
+
+  # Format code
+    format:
+      run: melos exec -- dart format .
+      description: Format code in all packages.
+
+  # Build desktop app (e.g., for Windows; adjust for macOS/Linux)
+    build:desktop:
+      run: cd packages/desktop_app && flutter build macos
+      description: Build the desktop app for Macos.
+
+  # Build mobile app (e.g., for Android APK)
+    build:mobile:
+      run: cd packages/mobile_app && flutter build apk
+      description: Build the mobile app for Android.
+
+  # Run desktop app
+    run:desktop:
+      run: cd packages/desktop_app && flutter run -d macos
+      description: Run the desktop app.
+
+  # Run mobile app
+    run:mobile:
+      run: cd packages/mobile_app && flutter run
+      description: Run the mobile app.
+
+  # Clean all packages
+    clean:
+      run: melos exec -- flutter clean
+      description: Clean all packages.
